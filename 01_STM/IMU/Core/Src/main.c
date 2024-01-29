@@ -251,10 +251,11 @@ void rotation_of_axis(float orientation[3][max_sample_number])
 		acc_data[1][i] = (accY*c1 + accX*s1*s2 + accZ*c2*s1)*9.81;
 		acc_data[2][i] = (accX*c1*s2 - accY*s1 + accZ*c1*c2)*9.81 - 9.81;
 
-		float total_ax_rotated = fabs(acc_data[0][i])*0.5;
+		float total_ax_rotated = fabs(acc_data[0][i])*0.3;
 
-		acc_data[0][i] = s3*total_ax_rotated;
-		acc_data[1][i] = c3*total_ax_rotated;
+		acc_data[0][i] = c3*total_ax_rotated;
+		acc_data[1][i] = s3*total_ax_rotated;
+		acc_data[2][i] *= 1.2;
 	}
 }
 
@@ -351,7 +352,7 @@ void corection_in_flat_move(float position[3][max_sample_number], float velocity
 	int i_next_sample_without_move = 0;
 
 	float height = position[2][sample_number-1];
-	if(fabs(height/number_of_steps) < 0.7)
+	if(fabs(height/number_of_steps) < 0.07)
 	{
 		i = 0;
 		while(i < sample_number-1)
@@ -591,10 +592,7 @@ int main(void)
   //calibration
   while (BMI160_init(imu_t) == 1){;}
 
-//    if (imu_t.INIT_OK_i8 != TRUE)
-//    {
-//  	   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, SET);
-//    }
+
     HAL_Delay(5000);
 
     HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET);
